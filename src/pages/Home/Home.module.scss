@@ -1,0 +1,23 @@
+.container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.header{
+  margin: 16px 0;
+}
+.submitBtn{
+  margin: 32px 16px;
+}
+.configuration{
+  margin: 64px 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.indexConfig{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
