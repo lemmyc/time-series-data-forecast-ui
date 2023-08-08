@@ -6,7 +6,7 @@ import { fetchData } from "../../service/fetchData";
 import Plot from "react-plotly.js";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const GET_PREDICTIONS_API = "http://127.0.0.1:5000/predict";
+const API_URL = "https://time-series-data-forecast-api.onrender.com";
 
 function Home() {
   const [fileName, setFileName] = useState("");
@@ -69,7 +69,7 @@ function Home() {
     };
 
 
-    let response = fetchData("POST", GET_PREDICTIONS_API, submit_data);
+    let response = fetchData("POST", `${API_URL}/predict`, submit_data);
     response.then((result) => {
       setIsLoading(false)
       if(result["status"] === "success"){
@@ -106,6 +106,7 @@ function Home() {
     resetData: resetData,
     getColumns: getColumns,
     toast: toast,
+    API_URL: API_URL
   };
 
 

@@ -6,12 +6,12 @@ const { Dragger } = Upload;
 // const DataEntry = ({changeFileName}) => (
 
 // );
-function DataEntry({ changeFileName, resetData, getColumns, toast}) {
+function DataEntry({ changeFileName, resetData, getColumns, toast, API_URL}) {
   const props = {
     name: "file",
     multiple: false,
     maxCount: 1,
-    action: "http://127.0.0.1:5000",
+    action: API_URL,
     onChange(info) {
       const { status } = info.file;
       changeFileName("");
