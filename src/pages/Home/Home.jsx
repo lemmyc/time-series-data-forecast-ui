@@ -1,15 +1,17 @@
 import styles from "./Home.module.scss";
 import { DataEntry } from "../../components";
-import { useState } from "react";
-import { Input, Button, Card, InputNumber, Radio} from "antd";
+import { useState, useEffect } from "react";
+import { Input, Button, Card, InputNumber, Radio, Modal, Spin} from "antd";
 import { fetchData } from "../../service/fetchData";
 import Plot from "react-plotly.js";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// const API_URL = "http://localhost:7777";  
 const API_URL = "https://time-series-data-forecast-api.onrender.com";
 
 function Home() {
   const [fileName, setFileName] = useState("");
+  const [firstLoading, setFirstLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({});
   const [columns, setColumns] = useState([]);
@@ -18,7 +20,12 @@ function Home() {
   const [ds, setDs] = useState(15);
   const [dsCol, setDsCol] = useState("");
   const [yCol, setYCol] = useState("");
-
+  useEffect(() => {
+    let _data = {};
+    fetchData("POST", API_URL, _data).then(() => {
+      setFirstLoading(false);
+    });
+  }, []);
   const changeFileName = (name) => {
     setFileName(name);
   };
@@ -45,6 +52,32 @@ function Home() {
     setYCol(e.target.value);
   }
   const handleClick = () => {
+    if(dsCol === ""){
+      toast.error("Date column can not be null. Please select one.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+      return;
+    }
+    if(yCol === ""){
+      toast.error("Y-value column can not be null. Please select one.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+      return;
+    }
     if(dsCol === yCol){
       toast.error("Date column and Y-value column can not be the same.", {
         position: "top-center",
@@ -58,6 +91,7 @@ function Home() {
         });
       return;
     }
+
     setIsLoading(true);
     let submit_data = {
       filename: fileName,
@@ -113,6 +147,14 @@ function Home() {
 
   return (
     <>
+      <Modal title="Notification" open={firstLoading} centered={true} closeIcon={false} footer={null}>
+        <div style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center   "}}>
+          <Spin size="large" style={{flex: 1}}/>
+          <div style={{flex: 4}}>
+            <h1>Initializing Web service</h1>
+            <p>This won't take long</p></div>
+        </div>
+      </Modal>
       <div className={styles.container}>
           <ToastContainer />
           <h1 className={styles.header}>Upload your Dataset</h1>

@@ -3,15 +3,51 @@ import { message, Upload } from "antd";
 import styles from "./DataEntry.module.scss";
 const { Dragger } = Upload;
 
-// const DataEntry = ({changeFileName}) => (
 
-// );
 function DataEntry({ changeFileName, resetData, getColumns, toast, API_URL}) {
+  const beforeUpload = (file) => {
+    const isLt25M = file.size / 1024 / 1024 <= 25;
+    return new Promise((resolve, reject) => {
+      const isDataset = file.type === 'text/csv' || file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      if (!isDataset) {
+        toast.error("File type not supported. Please select again", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+        reject(false);
+      }
+      
+      // check the file size - you can specify the file size you'd like here:
+      else if (!isLt25M) {
+        toast.error("File size must be smaller than 25MB. Please select again", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+        reject(false);
+      }
+      else{
+        resolve(true);
+      }
+    });
+  };
   const props = {
     name: "file",
     multiple: false,
     maxCount: 1,
-    action: API_URL,
+    action: `${API_URL}/upload`,
+    beforeUpload: beforeUpload,
     onChange(info) {
       const { status } = info.file;
       changeFileName("");
@@ -46,7 +82,17 @@ function DataEntry({ changeFileName, resetData, getColumns, toast, API_URL}) {
         changeFileName(`${info.file.name}`);
         getColumns(info.file.response["columns"]);
       } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
+        // message.error(`${info.file.name} file upload failed.`);
+        toast.error(`${info.file.name} file upload failed.`, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
       }
     },
 
