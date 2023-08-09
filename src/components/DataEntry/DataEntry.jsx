@@ -117,6 +117,9 @@ function DataEntry({ changeFileName, resetData, getColumns, toast, API_URL}) {
           <p className="ant-upload-hint">
             Supported file extension: *.csv, *.xlsx.
           </p>
+          <p className="ant-upload-hint">
+            Max file size: 25MB.
+          </p>
         </div>
       </Dragger>
   );
