@@ -6,8 +6,8 @@ import { fetchData } from "../../service/fetchData";
 import Plot from "react-plotly.js";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// const API_URL = "http://localhost:7777";  
-const API_URL = "https://time-series-data-forecast-api.onrender.com";
+const API_URL = "http://localhost:7777";  
+// const API_URL = "https://time-series-data-forecast-api.onrender.com";
 
 function Home() {
   const [fileName, setFileName] = useState("");
@@ -174,11 +174,14 @@ function Home() {
                   buttonStyle="solid"
                 >
                   <Radio.Button value="prophet">
-                    Facebook Prophet (fastest)
+                    Prophet
                   </Radio.Button>
-                  <Radio.Button value="lstm">LSTM (normal)</Radio.Button>
+                  <Radio.Button value="svm">
+                    SVM
+                  </Radio.Button>
+                  <Radio.Button value="lstm">LSTM</Radio.Button>
                   <Radio.Button value="lstm_gru">
-                    LSTM + GRU (slowest)
+                    LSTM + GRU
                   </Radio.Button>
                 </Radio.Group>
               </div>
@@ -279,7 +282,7 @@ function Home() {
                       y: data["predicted_y"],
                       mode: "lines+markers",
                       marker: { color: "blue" },
-                      name: "Forecast Values",
+                      name: "Forecasted Values",
                     },
                   ]}
                   layout={{
