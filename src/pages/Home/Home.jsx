@@ -6,8 +6,8 @@ import { fetchData } from "../../service/fetchData";
 import Plot from "react-plotly.js";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const API_URL = "http://localhost:7777";  
-// const API_URL = "https://time-series-data-forecast-api.onrender.com";
+// const API_URL = "http://localhost:7777";  
+const API_URL = "https://time-series-data-forecast-api.onrender.com";
 
 function Home() {
   const [fileName, setFileName] = useState("");
